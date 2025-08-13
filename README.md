@@ -29,10 +29,10 @@ pip install -r requirements.txt
 
 ## Run
 
-# Metric (°C, km/h)
+- Metric (°C, km/h)
 python app.py --city "Miramichi" --units metric
 
-# Imperial (°F, mph)
+- Imperial (°F, mph)
 python app.py --city "Miramichi" --units imperial
 
 ## Changelog 
