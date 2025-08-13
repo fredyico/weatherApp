@@ -11,7 +11,7 @@ def _to_local_time(utc_ts: int, tz_offset_sec: int) -> str:
     return datetime.utcfromtimestamp(utc_ts + tz_offset_sec).strftime("%H:%M:%S")
 
 
-def get_current_weather(city: str, api_key: str) -> Dict[str, Any]:
+def get_current_weather(city: str, api_key: str, units: str = "metric") -> Dict[str, Any]:
     """
     Returns a normalized dict:
       {
@@ -30,7 +30,7 @@ def get_current_weather(city: str, api_key: str) -> Dict[str, Any]:
       ValueError on bad city or API error.
     """
     # 1) Build URL (reuse what you had)
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units={units}"
     # 2) Call API and parse JSON
     resp = requests.get(url, timeout=10)
     data = resp.json()
@@ -40,14 +40,12 @@ def get_current_weather(city: str, api_key: str) -> Dict[str, Any]:
     if cod != 200:
         msg = data.get("message", "Unknown error")
         raise ValueError(f"OpenWeather error ({cod}): {msg}")
-    # 4) Extract + normalize fields
-    # TODO: fill these using your previous code
     tz = data["timezone"]                         # seconds
-    temp_c = int(data["main"]["temp"] - KELVIN_OFFSET)
-    feels_c = int(data["main"]["feels_like"] - KELVIN_OFFSET)
+    temp = int(data["main"]["temp"])
+    feels = int(data["main"]["feels_like"])
     humidity = data["main"]["humidity"]
     pressure = data["main"]["pressure"]
-    wind_kmh = round(float(data["wind"]["speed"]) * 3.6, 1)  # m/s -> km/h
+    wind_speed = round(float(data["wind"]["speed"]), 1)  # m/s -> km/h
     sunrise_local = _to_local_time(data["sys"]["sunrise"], tz)
     sunset_local  = _to_local_time(data["sys"]["sunset"], tz)
     cloud_pct = data["clouds"]["all"]
@@ -55,29 +53,29 @@ def get_current_weather(city: str, api_key: str) -> Dict[str, Any]:
     # 5) Return normalized dict
     return {
         "city": city,
-        "temp_c": temp_c,
-        "feels_c": feels_c,
+        "temp": temp,
+        "feels": feels,
         "humidity": humidity,
         "pressure": pressure,
-        "wind_kmh": wind_kmh,
+        "wind_speed": wind_speed,
         "sunrise_local": sunrise_local,
         "sunset_local": sunset_local,
         "cloud_pct": cloud_pct,
         "description": description,
     }
 
-def get_forecast(city: str, api_key: str, hours: int = 24) -> List[Dict[str, Any]]:
+def get_forecast(city: str, api_key: str, hours: int = 24, units: str = "metric") -> List[Dict[str, Any]]:
     """
     Returns a list of time-bucketed forecast entries (~3h steps) for the next `hours`.
     Each item:
       {
         "time_local": "YYYY-MM-DD HH:MM",
-        "temp_c": int,
-        "feels_c": int,
+        "temp": int,
+        "feels": int,
         "humidity": int
       }
     """
-    url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}"
+    url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units={units}"
     resp = requests.get(url, timeout=10)
     data = resp.json()
     
@@ -97,15 +95,15 @@ def get_forecast(city: str, api_key: str, hours: int = 24) -> List[Dict[str, Any
         main = item["main"]
         out.append({
             "time_local": time_local,
-            "temp_c": int(main["temp"] - KELVIN_OFFSET),
-            "feels_c": int(main["feels_like"] - KELVIN_OFFSET),
+            "temp": round(main["temp"]),
+            "feels": round(main["feels_like"]),
             "humidity": int(main["humidity"]),
         })
     return out
     
 def summarize_forecast(forecast: List[Dict[str, Any]]) -> Dict[str, Any]:
-    temps = [row["temp_c"] for row in forecast] or [0]
-    feels = [row["feels_c"] for row in forecast] or [0]
+    temps = [row["temp"] for row in forecast] or [0]
+    feels = [row["feels"] for row in forecast] or [0]
     hums  = [row["humidity"] for row in forecast] or [0]
     return {
         "count": len(forecast),
