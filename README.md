@@ -14,6 +14,7 @@ A small, job-style Python CLI that fetches **current weather** and a **24–48h 
 - Summary stats: min/max/avg temp, avg feels-like & humidity
 - **CSV export**: `--csv forecast.csv`
 - Safe config: reads `OPENWEATHER_API_KEY` from `.env`
+- Units toggle: --units metric|imperial
 
 ---
 
@@ -24,3 +25,17 @@ A small, job-style Python CLI that fetches **current weather** and a **24–48h 
 git clone https://github.com/<your-username>/weatherApp.git
 cd weatherApp
 pip install -r requirements.txt
+```
+
+## Run
+
+# Metric (°C, km/h)
+python app.py --city "Miramichi" --units metric
+
+# Imperial (°F, mph)
+python app.py --city "Miramichi" --units imperial
+
+## Changelog 
+- 0.2: Units toggle (--units), improved printing.
+- 0.1: Current weather, 24–48h forecast, summary, CSV export.
+
