@@ -7,6 +7,15 @@ A small, job-style Python CLI that fetches **current weather** and a **24–48h 
 
 ---
 
+## Usage
+
+# Metric (°C, km/h)
+python app.py --city "Miramichi" --units metric
+
+# Imperial (°F, mph)
+python app.py --city "Miramichi" --units imperial
+
+
 ## Features
 
 - Current conditions: temp, feels-like, humidity, pressure, wind, clouds, sunrise/sunset
