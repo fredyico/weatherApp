@@ -1,20 +1,22 @@
 # Weather Dashboard (CLI)
 
-A small, job-style Python CLI that fetches **current weather** and a **24–48h forecast** from OpenWeather, prints a clean terminal summary, and (optionally) exports CSV.
+A Python CLI tool for fetching and analyzing weather data from the OpenWeather API.  
+Displays current conditions and a configurable 24–48h forecast in a clean terminal table,  
+with summary statistics and optional CSV export.  
 
-- **Tech:** Python 3.10+, `requests`, `python-dotenv`
-- **Skills shown:** API integration, JSON parsing, CLI flags, input validation, simple data summarization, CSV export, environment-based config
+**Skills shown:** API integration, JSON parsing, CLI development, data summarization,  
+CSV handling, environment-based configuration.
 
 ---
 
 ## Usage
-
+```
 # Metric (°C, km/h)
 python app.py --city "Miramichi" --units metric
 
 # Imperial (°F, mph)
 python app.py --city "Miramichi" --units imperial
-
+```
 
 ## Features
 
