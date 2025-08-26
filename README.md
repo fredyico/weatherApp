@@ -65,6 +65,6 @@ python app.py --city "Miramichi" --units metric
 python app.py --city "Miramichi" --units imperial
 
 ## Changelog 
-- 0.2: Units toggle (--units), improved printing.
+- 0.3: Multi-city comparison table (`--compare`) and docs.
+- 0.2: Units toggle (`--units metric|imperial`), improved printing.
 - 0.1: Current weather, 24–48h forecast, summary, CSV export.
-
