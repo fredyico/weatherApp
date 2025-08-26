@@ -18,6 +18,24 @@ python app.py --city "Miramichi" --units metric
 python app.py --city "Miramichi" --units imperial
 ```
 
+### Multi-city compare
+Compare current conditions across multiple cities in a single table:
+
+```bash
+python app.py --city "Miramichi" "Halifax" "Moncton" --units metric --compare
+```
+
+### B) Example table (visual)
+```md
+**Example (metric):**
+Current Conditions (multi-city):
+City Temp(°C) Feels(°C) Humidity(%) Wind(km/h) Clouds(%) Description
+
+Miramichi 22 22 70 14.8 85 overcast clouds
+Halifax 19 18 82 9.3 90 light rain
+Moncton 21 21 73 12.1 68 broken clouds
+```
+
 ## Features
 
 - Current conditions: temp, feels-like, humidity, pressure, wind, clouds, sunrise/sunset
@@ -26,7 +44,7 @@ python app.py --city "Miramichi" --units imperial
 - **CSV export**: `--csv forecast.csv`
 - Safe config: reads `OPENWEATHER_API_KEY` from `.env`
 - Units toggle: --units metric|imperial
-
+- Multi-city comparison table: --city ... --compare
 ---
 
 ## Quick Start
