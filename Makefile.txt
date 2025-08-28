@@ -1,0 +1,10 @@
+.PHONY: run compare forecast
+
+run:
+	python app.py --city "Miramichi" --units metric
+
+compare:
+	python app.py --city "Miramichi" "Halifax" "Moncton" --units metric --compare
+
+forecast:
+	python app.py --city "Miramichi" --units metric --forecast-hours 24 --csv forecast.csv
